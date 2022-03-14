@@ -1,6 +1,7 @@
 package com.example.notes.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import androidx.fragment.app.viewModels

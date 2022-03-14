@@ -1,18 +1,30 @@
 package com.example.notes.common.usecase
 
+import com.example.notes.common.models.Note
+import com.example.notes.common.repository.NotesRepository
+
 class NotesUseCaseImpl(
-    private val routerUseCase: RouterUseCase
+    private val router: RouterUseCase,
+    private val notesRepository: NotesRepository
 ): NotesUseCase {
 
-    override fun createNote() {
-        routerUseCase.createNote()
+    override suspend fun getNotes(): List<Note> =
+        notesRepository.getNotes()
+
+    override suspend fun createNote(note: Note) {
+        notesRepository.createNote(note)
+        router.listNotes()
     }
 
-    override fun editNote(id: Long) {
-
+    override suspend fun editNote(note: Note): Boolean {
+        notesRepository.editNote(note)
+        return true
     }
 
-    override fun removeNote(id: Long) {
-
+    override suspend fun removeNote(id: Long): Boolean {
+        notesRepository.removeNote(id)
+        return true
     }
+
+
 }

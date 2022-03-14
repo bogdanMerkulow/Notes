@@ -1,11 +1,10 @@
 package com.example.notes.list
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.notes.common.models.Note
-import com.example.notes.common.repository.NotesRepository
 import com.example.notes.common.usecase.NotesUseCase
+import com.example.notes.common.usecase.RouterUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +12,7 @@ import kotlinx.coroutines.launch
 
 class NotesViewModel(
     private val noteUseCase: NotesUseCase,
-    private val notesRepository: NotesRepository,
+    private val router: RouterUseCase
 ) : ViewModel() {
 
     private val _notes: MutableStateFlow<List<Note>> = MutableStateFlow(emptyList())
@@ -21,22 +20,37 @@ class NotesViewModel(
 
     fun loadNotes() {
         viewModelScope.launch(Dispatchers.IO) {
-            val noteList = notesRepository.getNotes()
-
+            val noteList = noteUseCase.getNotes()
             _notes.tryEmit(noteList)
         }
     }
 
-    fun onEditNote(id: Long) {
-        Log.e(this.javaClass.name, "edit $id")
+    fun onEditNote(note: Note) {
+        viewModelScope.launch {
+            val isEdited = noteUseCase.editNote(note)
+
+            if (isEdited) {
+                val notes = noteUseCase.getNotes()
+                _notes.tryEmit(notes)
+            }
+        }
     }
 
     fun onRemoveNote(id: Long) {
-        Log.e(this.javaClass.name, "remove $id")
+        viewModelScope.launch {
+            val isRemoved = noteUseCase.removeNote(id)
+
+            if (isRemoved) {
+                val notes = noteUseCase.getNotes()
+                _notes.tryEmit(notes)
+            }
+        }
     }
 
     fun onCreateNote() {
-        noteUseCase.createNote()
+        viewModelScope.launch {
+            router.createNote()
+        }
     }
 
 }

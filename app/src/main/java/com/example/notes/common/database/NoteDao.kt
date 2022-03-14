@@ -12,6 +12,9 @@ interface NoteDao {
     @Query("SELECT * FROM notes")
     suspend fun getNotes(): Array<NoteDbo>?
 
+    @Query("SELECT * FROM notes WHERE id = :id")
+    suspend fun getNote(id: Long): NoteDbo?
+
     @Insert
     suspend fun insertAll(vararg notes: NoteDbo)
 

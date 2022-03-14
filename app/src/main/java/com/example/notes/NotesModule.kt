@@ -12,6 +12,7 @@ import com.example.notes.common.router.RouterUseCaseImpl
 import com.example.notes.common.usecase.NotesUseCase
 import com.example.notes.common.usecase.NotesUseCaseImpl
 import com.example.notes.common.usecase.RouterUseCase
+import com.example.notes.create.NoteCreateViewModel
 import com.example.notes.list.NotesViewModel
 import dagger.Module
 import dagger.Provides
@@ -28,16 +29,34 @@ class NotesModule {
     @ViewModelKey(NotesViewModel::class)
     fun provideNoteListViewModel(
         useCase: NotesUseCase,
-        notesRepository: NotesRepository
+        router: RouterUseCase
     ): ViewModel =
         NotesViewModel(
             useCase,
-            notesRepository
+            router
         )
 
     @Provides
-    fun provideNoteUseCase(router: RouterUseCase): NotesUseCase =
-        NotesUseCaseImpl(router)
+    @IntoMap
+    @ViewModelKey(NoteCreateViewModel::class)
+    fun provideNoteCreateViewModel(
+        router: RouterUseCase,
+        useCase: NotesUseCase
+    ): ViewModel =
+        NoteCreateViewModel(
+            router,
+            useCase
+        )
+
+    @Provides
+    fun provideNoteUseCase(
+        router: RouterUseCase,
+        notesRepository: NotesRepository
+    ): NotesUseCase =
+        NotesUseCaseImpl(
+            router,
+            notesRepository
+        )
 
     @Provides
     fun provideRouterUseCase(

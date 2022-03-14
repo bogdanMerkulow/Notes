@@ -8,4 +8,8 @@ class RouterUseCaseImpl(private val getNavController: NavControllerFactory): Rou
     override fun createNote() {
         getNavController().navigate(R.id.action_noteListFragment_to_noteCreateFragment)
     }
+
+    override fun listNotes() {
+        getNavController().navigate(R.id.action_noteCreateFragment_to_noteListFragment)
+    }
 }
