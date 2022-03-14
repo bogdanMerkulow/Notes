@@ -13,7 +13,9 @@ class NoteCreateViewModel(
 ): ViewModel() {
 
     fun navigateToListFragment() {
-        router.listNotes()
+        viewModelScope.launch {
+            router.listNotes()
+        }
     }
 
     fun createNote(title: String, content: String) {

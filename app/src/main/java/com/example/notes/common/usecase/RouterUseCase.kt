@@ -2,7 +2,7 @@ package com.example.notes.common.usecase
 
 interface RouterUseCase {
 
-    fun createNote()
+    suspend fun createNote()
 
-    fun listNotes()
+    suspend fun listNotes()
 }
