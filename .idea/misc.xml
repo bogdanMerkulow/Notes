@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projects/Kotlin/notes-test-assignment-android/app/src/main/res/layout/activity_main.xml" value="0.18541666666666667" />
         <entry key="..\:/Projects/Kotlin/notes-test-assignment-android/app/src/main/res/layout/activity_root.xml" value="0.3625" />
         <entry key="..\:/Projects/Kotlin/notes-test-assignment-android/app/src/main/res/layout/fragment_note_create.xml" value="0.25" />
         <entry key="..\:/Projects/Kotlin/notes-test-assignment-android/app/src/main/res/layout/fragment_note_details.xml" value="0.18541666666666667" />
