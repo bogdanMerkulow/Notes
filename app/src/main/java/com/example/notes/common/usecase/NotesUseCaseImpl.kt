@@ -4,7 +4,6 @@ import com.example.notes.common.models.Note
 import com.example.notes.common.repository.NotesRepository
 
 class NotesUseCaseImpl(
-    private val router: RouterUseCase,
     private val notesRepository: NotesRepository
 ): NotesUseCase {
 
@@ -13,7 +12,6 @@ class NotesUseCaseImpl(
 
     override suspend fun createNote(note: Note) {
         notesRepository.createNote(note)
-        router.listNotes()
     }
 
     override suspend fun editNote(note: Note): Boolean {

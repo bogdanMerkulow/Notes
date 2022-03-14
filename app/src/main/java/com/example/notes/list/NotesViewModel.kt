@@ -2,12 +2,12 @@ package com.example.notes.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.common.navigation.NavCommand
 import com.example.notes.common.models.Note
 import com.example.notes.common.usecase.NotesUseCase
 import com.example.notes.common.usecase.RouterUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class NotesViewModel(
@@ -17,6 +17,9 @@ class NotesViewModel(
 
     private val _notes: MutableStateFlow<List<Note>> = MutableStateFlow(emptyList())
     val notes: StateFlow<List<Note>> get() = _notes
+
+    private val _navigate: MutableSharedFlow<NavCommand> = MutableSharedFlow()
+    val navigate: SharedFlow<NavCommand> get() = _navigate.asSharedFlow()
 
     fun loadNotes() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -49,7 +52,8 @@ class NotesViewModel(
 
     fun onCreateNote() {
         viewModelScope.launch {
-            router.createNote()
+            val navCommand = router.createNoteNavCommand()
+            _navigate.emit(navCommand)
         }
     }
 

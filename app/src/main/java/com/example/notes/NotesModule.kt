@@ -1,8 +1,6 @@
 package com.example.notes
 
 import androidx.lifecycle.ViewModel
-import com.example.common.navigation.NavControllerFactory
-import com.example.common.navigation.NavigationModule
 import com.example.common.viewmodel.ViewModelKey
 import com.example.notes.common.database.DataBaseModule
 import com.example.notes.common.database.NoteDatabase
@@ -19,8 +17,7 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 
 @Module(includes = [
-    DataBaseModule::class,
-    NavigationModule::class
+    DataBaseModule::class
 ])
 class NotesModule {
 
@@ -40,28 +37,22 @@ class NotesModule {
     @IntoMap
     @ViewModelKey(NoteCreateViewModel::class)
     fun provideNoteCreateViewModel(
-        router: RouterUseCase,
         useCase: NotesUseCase
     ): ViewModel =
         NoteCreateViewModel(
-            router,
             useCase
         )
 
     @Provides
     fun provideNoteUseCase(
-        router: RouterUseCase,
         notesRepository: NotesRepository
     ): NotesUseCase =
         NotesUseCaseImpl(
-            router,
             notesRepository
         )
 
     @Provides
-    fun provideRouterUseCase(
-        navControllerFactory: NavControllerFactory
-    ): RouterUseCase = RouterUseCaseImpl(navControllerFactory)
+    fun provideRouterUseCase(): RouterUseCase = RouterUseCaseImpl()
 
     @Provides
     fun provideNotesRepository(

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.common.flow.launchWhenViewCreated
 import com.example.common.fragment.BindingFragment
@@ -54,6 +55,7 @@ class NoteListFragment :
         launchWhenViewCreated {
             with(viewModel) {
                 notes.observe(::onNotesLoaded)
+                navigate.observe { findNavController().navigate(it.action) }
             }
         }
     }

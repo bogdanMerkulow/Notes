@@ -3,6 +3,8 @@ package com.example.notes.create
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.example.common.flow.launchWhenViewCreated
 import com.example.common.fragment.BindingFragment
 import com.example.common.viewmodel.getViewModelFactory
 import com.example.databinding.FragmentNoteCreateBinding
@@ -19,7 +21,15 @@ class NoteCreateFragment : BindingFragment<FragmentNoteCreateBinding>(
         with(binding) {
             save.setOnClickListener(::onSaveClick)
             toolbar.setNavigationOnClickListener {
-                viewModel.navigateToListFragment()
+                findNavController().navigateUp()
+            }
+        }
+
+        launchWhenViewCreated {
+            with(viewModel) {
+                noteCreated.observe {
+                    findNavController().navigateUp()
+                }
             }
         }
     }
